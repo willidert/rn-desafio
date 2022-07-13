@@ -10,3 +10,16 @@ Um app desenvolvido em React-Native para um desafio de seleção de um projeto d
 - Deve exibir informações de quem implementou
 - Deve conter um botão para enviar email para o dev
 - Deve conter um botão para enviar wpp para o dev
+
+### Problemas
+
+- habilitar a API do maps, n consegui verificar minha conta pra usar o serviço
+- o lib que eu uso pra qrcode usa cm dependencia uma lib pra acessar a camera, mas essa lib ta desatualizada
+  ["possivel solução"(https://github.com/facebook/react-native/issues/33557#issuecomment-1100919812), ele n menciona mas precisa instalar essa [deprecated](https://www.npmjs.com/package/deprecated-react-native-prop-types)...
+
+### Executando
+
+```sh
+npx i
+npx react-native run-android
+```
