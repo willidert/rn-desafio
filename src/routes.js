@@ -41,8 +41,32 @@ function Routes() {
           },
         }}
       />
-      <Tab.Screen name="MyMap" component={MapScreen} />
-      <Tab.Screen name="Qrcode" component={QrcodeScreen} />
+      <Tab.Screen
+        name="MyMap"
+        component={MapScreen}
+        options={{
+          tabBarIcon: ({color, size, focused}) => {
+            if (focused) {
+              return <Icon name="map" size={size} color={color} />;
+            }
+
+            return <Icon name="map-outline" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Qrcode"
+        component={QrcodeScreen}
+        options={{
+          tabBarIcon: ({color, size, focused}) => {
+            if (focused) {
+              return <Icon name="camera" size={size} color={color} />;
+            }
+
+            return <Icon name="camera-outline" size={size} color={color} />;
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 }
