@@ -4,30 +4,12 @@ import Geolocation from '@react-native-community/geolocation';
 import {
   StyleSheet,
   View,
-  Dimensions,
   Text,
   TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
 
 import MapView, {Marker} from 'react-native-maps';
-
-const {width, height} = Dimensions.get('window');
-
-const ASPECT_RATIO = width / height;
-const LATITUDE = -3.09164;
-const LONGITUDE = -60.01716;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
-const GEOLOCATION_OPTIONS = {
-  enableHighAccuracy: true,
-  timeout: 20000,
-  maximumAge: 1000,
-};
-const ANCHOR = {x: 0.5, y: 0.5};
-
-const colorOfmyLocationMapMarker = 'blue';
 
 const propTypes = {
   ...Marker.propTypes,
@@ -46,17 +28,27 @@ const propTypes = {
   enableHack: PropTypes.bool,
 };
 
+const GEOLOCATION_OPTIONS = {
+  enableHighAccuracy: true,
+  timeout: 20000,
+  maximumAge: 1000,
+};
+
 const defaultProps = {
   enableHack: false,
   geolocationOptions: GEOLOCATION_OPTIONS,
 };
 
 export default class MapScreen extends PureComponent {
+  map: any;
   constructor(props) {
     super(props);
     this.state = {
-      lat: -3.0917797,
-      long: -60.0175282,
+      uea: {latitude: -3.09164, longitude: -60.01716},
+      curPos: {latitude: -3.09164, longitude: -60.01716},
+      curAng: 45,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
       myPosition: null,
     };
   }
@@ -86,7 +78,7 @@ export default class MapScreen extends PureComponent {
     }
   }
 
-  watchLocation() {
+  watchLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
         this.state.myPosition = position.coords;
@@ -102,10 +94,33 @@ export default class MapScreen extends PureComponent {
         this.setState({myPosition});
       }
     });
-  }
+  };
 
   clearLocation = () => {
     Geolocation.clearWatch(this.watchID);
+  };
+
+  showCurLoc = () => {
+    this.setState({
+      curPos: {...this.state.myPosition},
+    });
+    this.map.animateCamera({
+      center: {...this.state.myPosition},
+      pitch: this.state.curAng,
+    });
+  };
+
+  showUEA = () => {
+    this.setState({
+      curPos: {
+        latitude: this.state.uea.latitude,
+        longitude: this.state.uea.longitude,
+      },
+    });
+    this.map.animateCamera({
+      center: {...this.state.uea},
+      pitch: this.state.curAng,
+    });
   };
 
   componentWillUnmount() {
@@ -125,36 +140,36 @@ export default class MapScreen extends PureComponent {
       coordinate = myPosition;
       heading = myPosition.heading;
     }
-
-    const rotate =
-      typeof heading === 'number' && heading >= 0 ? `${heading}deg` : null;
-
     return (
       <View style={styles.container}>
         <MapView
+          ref={el => (this.map = el)}
           style={styles.map}
           initialRegion={{
-            latitude: LATITUDE,
-            longitude: LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
+            ...this.state.curPos,
+            latitudeDelta: this.state.latitudeDelta,
+            longitudeDelta: this.state.longitudeDelta,
           }}>
           <Marker
             title="EST"
             description="UEA"
             coordinate={{
-              latitude: LATITUDE,
-              longitude: LONGITUDE,
+              ...this.state.uea,
+            }}
+          />
+          <Marker
+            title="Iam"
+            description="uau"
+            coordinate={{
+              ...this.state.myPosition,
             }}
           />
         </MapView>
         <View style={styles.subcontainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.showCurrentLocation}>
+          <TouchableOpacity style={styles.button} onPress={this.showCurLoc}>
             <Text>Mostrar local atual</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={this.showUEA}>
             <Text>Mostrar EST</Text>
           </TouchableOpacity>
         </View>
