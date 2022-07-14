@@ -10,3 +10,7 @@ Um app desenvolvido em React-Native para um desafio de seleção de um projeto d
 - Deve exibir informações de quem implementou
 - Deve conter um botão para enviar email para o dev
 - Deve conter um botão para enviar wpp para o dev
+
+### Problemas
+
+- configurar variavel de ambiente para a chave de API do maps
