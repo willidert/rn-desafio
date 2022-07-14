@@ -1,5 +1,5 @@
-import React, {Component, useState} from 'react';
-import {Button, Linking, Text, TouchableOpacity, View} from 'react-native';
+import React, {Component} from 'react';
+import {Linking, Text, TouchableOpacity, View} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
@@ -19,11 +19,13 @@ class App extends Component {
   render() {
     return (
       <QRCodeScanner
-        onRead={data => this.setState({link: data})}
+        onRead={data => {
+          this.setState({link: data.data});
+        }}
         flashMode={RNCamera.Constants.FlashMode.off}
         topContent={
           <View>
-            <Text>{this.state.link}</Text>
+            <Text style={{color: '#000'}}>{this.state.link}</Text>
           </View>
         }
         bottomContent={
