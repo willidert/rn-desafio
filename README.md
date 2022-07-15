@@ -11,6 +11,8 @@ Um app desenvolvido em React-Native para um desafio de seleção de um projeto d
 - Deve conter um botão para enviar email para o dev
 - Deve conter um botão para enviar wpp para o dev
 
+- configurar variavel de ambiente para a chave de API do maps
+
 ### Problemas
 
 - habilitar a API do maps, n consegui verificar minha conta pra usar o serviço
@@ -23,3 +25,4 @@ Um app desenvolvido em React-Native para um desafio de seleção de um projeto d
 npx i
 npx react-native run-android
 ```
+
